@@ -10,17 +10,20 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <section className="wrapper">
-      <UltimateBarrage>
 
-        “hello world”
-        <p>dfadf</p>
-        <p>dfadf</p>
-        <p>dfadf</p>
-        <p>dfadf</p>
+    <UltimateBarrage className="wrapper">
+      “hello world”
+      <i>dfadf</i>
+      <p>dhfadhf 🚀🚀🚀🚀</p>
+      <section>
         <img src={require('./static/avatar.jpg')} alt=""/>
+        <small>这是一个带有图片的弹幕</small>
+      </section>
+      <big>dfadf</big>
+      <strong>dfadf</strong>
+      <em>dfadf</em>
 
-      </UltimateBarrage>
-    </section>
+    </UltimateBarrage>
+
   </React.StrictMode>
 );

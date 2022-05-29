@@ -1,22 +1,23 @@
-import React, {Fragment, useLayoutEffect, useState} from "react";
+import React, {useLayoutEffect, useState} from "react";
 import BarrageItem from "../BarrageItem";
 
 
 export type Children = React.ReactNode | React.ReactNode[]
 
 export type UltimateBarrageProps = {
-  children: Children
-}
-
-const ultimateBarrageStyle: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
-  background: 'rgba(227,168,168,0.25)',
-  overflow: 'hidden'
-}
+  children: Children,
+  direction?: 'ltr' | 'rtl',
+} & React.HTMLAttributes<HTMLDivElement>
 
 const UltimateBarrage: React.FC<UltimateBarrageProps> = (props) => {
-  const {children} = props
+  const {children, direction, className, ...rawSectionProps} = props
+  
+  /**
+   * @desc 默认配置
+   */
+  const defaultOption: Partial<UltimateBarrageProps> = {
+    direction: 'rtl'
+  }
 
   const [localChildren, setLocalChildren] = useState<Children>(children)
 
@@ -36,7 +37,7 @@ const UltimateBarrage: React.FC<UltimateBarrageProps> = (props) => {
 
 
   return (
-    <section style={ultimateBarrageStyle}>
+    <section className={"ultimate-barrage " + (className ? className : '')} {...rawSectionProps}>
       {localChildren}
     </section>
   )
