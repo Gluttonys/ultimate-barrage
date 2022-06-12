@@ -1,17 +1,8 @@
-.wrapper {
-  width  : 800px;
-  height : 400px;
-  border : 1px solid red;
-
-  margin : 20vh auto;
-}
-
 
 .ultimate-barrage {
-  min-height  : 300px;
-  overflow    : hidden;
-  user-select : none;
-  position    : relative;
+  min-height : 300px;
+  overflow   : hidden;
+  position   : relative;
 }
 
 .ultimate-barrage img {
@@ -30,14 +21,16 @@
 
 .barrage-item {
   display       : inline-block;
-  border        : 1px solid #8676eb;
   border-radius : 5px;
-
+  width         : 100%;
+  
   position      : absolute;
   left          : 100%;
-
   animation     : run 8s linear infinite forwards;
   will-change   : left;
+
+  color         : #f18808;
+  font-weight   : 800;
 }
 
 .barrage-item:hover {

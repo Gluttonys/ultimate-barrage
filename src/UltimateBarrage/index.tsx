@@ -1,17 +1,25 @@
-import React, {useLayoutEffect, useState} from "react";
+import React, {forwardRef, ReactNode, useImperativeHandle, useLayoutEffect, useState} from "react";
 import BarrageItem from "../BarrageItem";
 
 
 export type Children = React.ReactNode | React.ReactNode[]
+export type ChildrenList = ReactNode[]
 
 export type UltimateBarrageProps = {
-  children: Children,
+  children?: Children,
   direction?: 'ltr' | 'rtl',
 } & React.HTMLAttributes<HTMLDivElement>
 
-const UltimateBarrage: React.FC<UltimateBarrageProps> = (props) => {
+export type UltimateBarrageMethod = {
+  send: (message: ReactNode) => void,
+  clear: () => void
+}
+
+let UID = 0
+
+const UltimateBarrage = forwardRef<UltimateBarrageMethod, UltimateBarrageProps>((props, ref) => {
   const {children, direction, className, ...rawSectionProps} = props
-  
+
   /**
    * @desc 默认配置
    */
@@ -19,29 +27,47 @@ const UltimateBarrage: React.FC<UltimateBarrageProps> = (props) => {
     direction: 'rtl'
   }
 
-  const [localChildren, setLocalChildren] = useState<Children>(children)
+  const [localChildren, setLocalChildren] = useState<ChildrenList>([])
 
-  /**
-   * 将 children 包装成移动块
-   */
   useLayoutEffect(() => {
     if (Array.isArray(children)) {
       const __tempTransformChildren = children.map<Children>(
-        (childrenItem, index) => <BarrageItem key={index}>{childrenItem}</BarrageItem>
+        (childrenItem, index) => <BarrageItem key={++UID}>{childrenItem}</BarrageItem>
       )
       setLocalChildren(__tempTransformChildren)
-    } else {
-      setLocalChildren(<BarrageItem>{children}</BarrageItem>)
+    } else if (React.isValidElement(children)) {
+      setLocalChildren([<BarrageItem key={++UID}>{children}</BarrageItem>])
     }
   }, [children])
 
 
+  useImperativeHandle(ref, () => ({
+    send(message: ReactNode) {
+      const transformItem = <BarrageItem key={++UID}>{message}</BarrageItem>
+      if (Array.isArray(localChildren)) {
+        setLocalChildren([
+          ...localChildren,
+          transformItem
+        ])
+      } else {
+        setLocalChildren([
+          localChildren,
+          transformItem
+        ])
+      }
+    },
+    clear: () => {
+      setLocalChildren([])
+    }
+  }))
+
+
   return (
-    <section className={"ultimate-barrage " + (className ? className : '')} {...rawSectionProps}>
+    <div className={"ultimate-barrage " + (className ? className : '')} {...rawSectionProps}>
       {localChildren}
-    </section>
+    </div>
   )
-}
+})
 
 UltimateBarrage.displayName = 'ultimate-barrage'
 
