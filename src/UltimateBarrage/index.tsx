@@ -1,4 +1,4 @@
-import React, {forwardRef, ReactNode, useImperativeHandle, useLayoutEffect, useState} from "react";
+import React, {forwardRef, ReactNode, useEffect, useImperativeHandle, useState} from "react";
 import BarrageItem from "../BarrageItem";
 
 
@@ -29,7 +29,7 @@ const UltimateBarrage = forwardRef<UltimateBarrageMethod, UltimateBarrageProps>(
 
   const [localChildren, setLocalChildren] = useState<ChildrenList>([])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (Array.isArray(children)) {
       const __tempTransformChildren = children.map<Children>(
         (childrenItem, index) => <BarrageItem key={++UID}>{childrenItem}</BarrageItem>
@@ -38,23 +38,16 @@ const UltimateBarrage = forwardRef<UltimateBarrageMethod, UltimateBarrageProps>(
     } else if (React.isValidElement(children)) {
       setLocalChildren([<BarrageItem key={++UID}>{children}</BarrageItem>])
     }
-  }, [children])
+  }, [])
 
 
   useImperativeHandle(ref, () => ({
     send(message: ReactNode) {
       const transformItem = <BarrageItem key={++UID}>{message}</BarrageItem>
-      if (Array.isArray(localChildren)) {
-        setLocalChildren([
-          ...localChildren,
-          transformItem
-        ])
-      } else {
-        setLocalChildren([
-          localChildren,
-          transformItem
-        ])
-      }
+      setLocalChildren([
+        ...localChildren,
+        transformItem
+      ])
     },
     clear: () => {
       setLocalChildren([])

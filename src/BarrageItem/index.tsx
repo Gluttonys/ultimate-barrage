@@ -12,7 +12,7 @@ const BarrageItem: React.FC<BarrageItemProps> = (props) => {
   const {children} = props
 
   const barrageItemStyle: React.CSSProperties = {
-    top: `${getRandomTop(50)}%`,
+    top: `${getRandomTop(70)}%`,
     // animationDuration: `${getRandomDelay()}s`
   }
 
